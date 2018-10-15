@@ -1,5 +1,6 @@
 package android.myweather.com.myweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.myweather.com.myweather.gson.Forecast;
@@ -165,6 +166,8 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
     /*
     * 根据天气id请求城市天气信息
