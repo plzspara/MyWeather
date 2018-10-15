@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.myweather.com.myweather.db.City;
 import android.myweather.com.myweather.db.County;
 import android.myweather.com.myweather.db.Province;
+import android.myweather.com.myweather.gson.Weather;
 import android.myweather.com.myweather.util.HttpUtil;
 import android.myweather.com.myweather.util.Utility;
 import android.nfc.Tag;
@@ -88,10 +89,17 @@ public class ChooseAreaFragment extends Fragment {
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY){
                     String weatherId = countyList.get(position).getWeatherId();
-                    Intent intent = new Intent(getActivity(),WeatherActivity.class);
-                    intent.putExtra("weather_id", weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+                    if (getActivity() instanceof  MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    } else if (getActivity() instanceof WeatherActivity){
+                        WeatherActivity activity = (WeatherActivity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefresh.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
                 }
             }
         });
