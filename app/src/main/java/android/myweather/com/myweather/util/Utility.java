@@ -6,7 +6,9 @@ import android.myweather.com.myweather.db.County;
 
 
 import android.myweather.com.myweather.gson.Weather;
+import android.nfc.Tag;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -18,7 +20,7 @@ import org.json.JSONObject;
  *@author panlister
  */
 public class Utility {
-
+    private static final String TAG = "Utility";
     /*
     * 解析和处理服务器返回的省级数据
     * */
@@ -92,6 +94,7 @@ public class Utility {
     * */
     public static Weather handleWeatherResponse(String response){
         try {
+            //Log.d(TAG,response);
             JSONObject jsonObject = new JSONObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
             String weatherContent = jsonArray.getJSONObject(0).toString();

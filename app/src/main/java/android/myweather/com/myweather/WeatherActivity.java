@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -71,6 +70,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     private Button navButton;
 
+    private static final String TAG = "WeatherActivity";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +130,9 @@ public class WeatherActivity extends AppCompatActivity {
         }else {
             loadBingPic();
         }
+        if(savedInstanceState != null){
+
+        }
 
     }
     /*
@@ -171,11 +174,17 @@ public class WeatherActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     /*
     * 根据天气id请求城市天气信息
     * */
     public void requestWeather(final String weatherId){
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=bc0418b57b2d4918819d3974ac1285d9";
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=1ee503ef4372430db74a5cfe321ea93b";
         HttpUtil.senOkhttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -184,6 +193,7 @@ public class WeatherActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "run: failure");
                         swipeRefresh.setRefreshing(false);
                     }
                 });
